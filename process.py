@@ -17,4 +17,4 @@ sales_reports(log_file)
 #this is removing any trailing charecters from the logfile
 # pulls the informations from the zero index to the third index
 # a if statments that wants to confirm if day is equal to tue
-#if tusday is true then it will print the current line
+#if monday is true then it will print the current line
