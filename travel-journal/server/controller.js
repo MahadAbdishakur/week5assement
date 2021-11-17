@@ -20,16 +20,16 @@ module.exports = {
 
             create table countries (
                 country_id serial primary key, 
-                name varchar
+                name varchar(100)
             );
 
-            create table cc_cities (
-
+            create table cities (
                 city_id serial primary key,
-                name varchar(50),
+                name varchar(40) NOT NULL,
                 rating integer,
                 country_id integer
-            ) 
+
+            );
 
             insert into countries (name)
             values ('Afghanistan'),
@@ -236,6 +236,31 @@ module.exports = {
         sequelize.query(`SELECT * FROM countries`)
             .then(dbRes => res.status(200).send(dbRes[0]))
             .catch(err => console.log(err))
+    },
+    createCity: (req, res) =>{
+        const {name, rating, countryId} = req.body
+
+        sequelize.query(`
+        INSERT INTO cities  (name, rating, country_id)
+        VALUES ('${name}', ${rating}, ${countryId});
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(res => {
+            res.status(400).send('failed')
+        })
+        // console.log(req.body)
+        
+    },
+     getCities: (req, res) =>{
+         sequelize.query(` SELECT city, city_id, rating, country_id, country FROM countries, cities
+         FROM cities.name AS city
+         JOIN countries.name AS country
+         ON country.countries_id = city.cities_id;
+    `)
+    .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(res => {
+            res.status(400).send('failed')
+        })
+     }
+
     }
-    createCity: ()
-}

@@ -10,14 +10,13 @@ function handleSubmit(e) {
         alert ('You must enter a city name')
         return
     }
-
     let userRating = document.querySelector('input[name="rating"]:checked').value
     let body = {
         name: nameInput.value, 
         rating: +userRating, 
         countryId: +countrySelect.value
     }
-
+    app.get('/cities', getCities)
     axios.post('http://localhost:4004/cities', body)
         .then(() => {
             countrySelect.value = 1
