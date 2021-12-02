@@ -245,22 +245,36 @@ module.exports = {
         VALUES ('${name}', ${rating}, ${countryId});
         `)
         .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(res => {
+        .catch(err => {
             res.status(400).send('failed')
         })
-        // console.log(req.body)
         
     },
      getCities: (req, res) =>{
-         sequelize.query(` SELECT city, city_id, rating, country_id, country FROM countries, cities
-         FROM cities.name AS city
-         JOIN countries.name AS country
-         ON country.countries_id = city.cities_id;
+         sequelize.query(`SELECT city_id, c.name AS city, c.rating, c.country_id, co.name AS country 
+         FROM cities AS c
+             JOIN countries AS co
+             ON co.country_id = c.country_id;
     `)
     .then(dbRes => res.status(200).send(dbRes[0]))
-        .catch(res => {
+        .catch(err => {
             res.status(400).send('failed')
         })
+     },
+     deleteCity: (req, res) =>{
+         let {id} = req.params;
+         id = parseInt(id);
+        
+         sequelize.query(`DELETE
+         FROM cities
+         WHERE city_id = '${id}';
+         `)
+         .then(dbRes => res.status(200).send(dbRes[0]))
+         .catch(err => {
+             res.status(400).send('failed')
+         })
+      }
      }
 
-    }
+    
+    
